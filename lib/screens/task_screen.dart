@@ -1,11 +1,23 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/model/tasks.dart';
 import 'package:todo_app/screens/add_task_screen.dart';
 import 'package:todo_app/widgets/tasks_list.dart';
 
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
   const TaskScreen({Key? key}) : super(key: key);
+
+  @override
+  State<TaskScreen> createState() => _TaskScreenState();
+}
+
+class _TaskScreenState extends State<TaskScreen> {
+  List<Task> tasks = [
+    Task(name: 'Buy milk'),
+    Task(name: 'Eat eggs'),
+    Task(name: 'Drink milk'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +29,12 @@ class TaskScreen extends StatelessWidget {
         onPressed: () => {
           showModalBottomSheet(
             context: context,
-            builder: (BuildContext context) => const AddTaskScreen(),
+            builder: (BuildContext context) => AddTaskScreen(addTaskCallback: (newTaskTitle) {
+              setState(() {
+                tasks.add(Task(name: newTaskTitle));
+              });
+              Navigator.pop(context);
+            }),
           ),
         },
       ),
@@ -28,8 +45,8 @@ class TaskScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 60.0, left: 30.0, right: 30.0, bottom: 30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   child: Icon(
                     Icons.view_list_rounded,
                     color: Colors.lightBlueAccent,
@@ -38,10 +55,10 @@ class TaskScreen extends StatelessWidget {
                   radius: 30.0,
                   backgroundColor: Colors.white,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40.0,
                 ),
-                Text(
+                const Text(
                   'TodoApp',
                   textAlign: TextAlign.start,
                   style: TextStyle(
@@ -50,12 +67,12 @@ class TaskScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10.0,
                 ),
                 Text(
-                  '10 Tasks',
-                  style: TextStyle(
+                  '${tasks.length} tasks',
+                  style: const TextStyle(
                     fontSize: 20.0,
                     color: Colors.white,
                   ),
@@ -75,12 +92,8 @@ class TaskScreen extends StatelessWidget {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: ListView(
-                children: const [
-                  TasksList(),
-                  TasksList(),
-                  TasksList(),
-                ],
+              child: TasksList(
+                tasks: tasks,
               ),
             ),
           ),

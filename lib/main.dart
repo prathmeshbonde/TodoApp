@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/screens/task.dart';
+import 'package:todo_app/screens/task_screen.dart';
 
 void main() {
   runApp(const TodoApp());
@@ -11,6 +11,7 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: TaskScreen(),
     );
   }

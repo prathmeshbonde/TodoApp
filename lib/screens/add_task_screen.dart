@@ -1,15 +1,15 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/model/task_data.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({Key? key, this.addTaskCallback}) : super(key: key);
-
-  final Function? addTaskCallback;
+  const AddTaskScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? newTaskTitle;
+    String newTaskTitle = "";
 
     return Container(
       // padding: const EdgeInsets.only(top: 20.0),
@@ -48,9 +48,6 @@ class AddTaskScreen extends StatelessWidget {
                 },
               ),
               TextButton(
-                onPressed: () {
-                  addTaskCallback!(newTaskTitle);
-                },
                 child: const Text(
                   'Add',
                   style: TextStyle(fontSize: 25.0, color: Colors.white),
@@ -59,6 +56,10 @@ class AddTaskScreen extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(Colors.lightBlueAccent),
                   fixedSize: MaterialStateProperty.all(const Size(20.0, 50.0)),
                 ),
+                onPressed: () {
+                  Provider.of<TaskData>(context, listen: false).addTask(newTaskTitle);
+                  Navigator.pop(context);
+                },
               ),
             ],
           ),
